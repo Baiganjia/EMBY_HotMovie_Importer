@@ -5,18 +5,15 @@ import time
 import base64
 import urllib.parse
 
-# Emby服务器的地址和API密钥
-EMBY_SERVER = 'https://BAIGAN.EMBY.SERVER/'
-API_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXX'
 
-# 设置要添加电影到指定合集的ID，不指定则自动创建
-COLLECTION_ID = "233333"
-# 设置要创建的合集的名称
-COLLECTION_NAME = "【豆瓣热门电影】"
+EMBY_SERVER = 'https://XXXXX'
+API_KEY = 'XXXX'  # 这里填入你自己的eMBY API密钥
+TMDB_API_KEY = 'XXXXX' # 这里填入你自己的TMDB API密钥
+
+COLLECTION_ID = "2719225"
+COLLECTION_NAME = "【豆瓣TMDB热门电影】"
 
 class Get_Detail(object):
-    
-
     def __init__(self):
         self.ctls = []
         self.emby_server = EMBY_SERVER
@@ -96,6 +93,7 @@ class Get_Detail(object):
         url = f"{self.emby_server}/emby/Collections/{collection_id}/Items?Ids={emby_id}&api_key={self.api_key}"
         headers = {"accept": "*/*"}
         response = requests.post(url, headers=headers)
+        response.raise_for_status()
         return response.status_code == 204
 
     def replace_cover_image(self, library_id, image_url):
@@ -117,14 +115,58 @@ class Get_Detail(object):
             print(f'合集封面替换失败 {library_id}.')
 
     def check_collection_exists(self, collection_id):
-        url = f"{self.emby_server}/emby/Items?Ids={collection_id}&api_key={self.api_key}"
+        url = f"{self.emby_server}/emby/Items/{collection_id}?api_key={self.api_key}"
         response = requests.get(url)
+        if response.status_code != 200:
+            print(f"Error: Received status code {response.status_code} when checking collection {collection_id}.")
+            return False
         data = response.json()
-        return response.status_code == 200 and data.get('TotalRecordCount', 0) > 0
+        if data.get('Type') != 'BoxSet':
+            print(f"Error: Item {collection_id} exists but it is not a collection.")
+            return False
+        print(f"Collection {collection_id} exists.")
+        return True
     
+
+    def get_tmdb_popular_movies(self, api_key):
+        base_url = "https://api.themoviedb.org/3"
+        headers = {
+            "Accept": "application/json",
+        }
+        response = requests.get(f"{base_url}/movie/popular?api_key={api_key}", headers=headers)
+        if response.status_code == 200:
+            return response.json()['results']
+        else:
+            print(f"An error occurred: {response.status_code}")
+            return []
+
+    def get_movie_details(self, movie_id, api_key):
+        base_url = "https://api.themoviedb.org/3"
+        headers = {
+            "Accept": "application/json",
+        }
+        response = requests.get(f"{base_url}/movie/{movie_id}?api_key={api_key}", headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"An error occurred: {response.status_code}")
+            return None
+
     def run(self):
+        # 先获取豆瓣和TMDB的电影信息
         self.ctls = self.get_value(self.urllist)
+        tmdb_movies = self.get_tmdb_popular_movies(TMDB_API_KEY)
+
+        # 将TMDB热门电影列表转化为与豆瓣电影同样的格式
+        for movie in tmdb_movies:
+            details = self.get_movie_details(movie['id'], TMDB_API_KEY)
+            self.ctls.append({
+                '影名': movie['title'],
+                'imdb_id': details['imdb_id'] if details else None,
+            })
+
         collection_id = self.collection_id
+        print(collection_id)
 
         if not self.check_collection_exists(collection_id):
             print('指定合集不存在合集，开始重新创建合集')
@@ -134,6 +176,7 @@ class Get_Detail(object):
         else:
             print('指定合集存在，项目将直接添加到该指定ID内')
             collection_id = collection_id
+
         emby_id = None
         image_url = None
 
@@ -168,8 +211,6 @@ class Get_Detail(object):
                     print()
         else:
             print("该电影似乎缺失海报.")
-
-
 
 
 if __name__ == "__main__":
