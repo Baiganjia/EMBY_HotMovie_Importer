@@ -1,31 +1,26 @@
 # Emby服务器自动创建豆瓣+TMDB热门电影合集
+
 设计狗一只，没学过Python，啥都不会，GPT写的，我只管Pua它。
 脚本大概能用，应该。。。
 
-这个脚本是用来获取豆瓣热门电影和TMDB热门电影的数据，
-然后把Emby服务器中有的电影，添加到合集中去。 
+获取豆瓣热门电影和TMDB热门电影的数据，
+然后将Emby服务器中有的电影，添加到合集中去。 
 如果不指定合集，则会自动创建一个。
 之后会更新合集封面，让合集封面保持最新。
 Emby中还没有的电影，会以[片名，IMDBID]的格式输出到CSV文件内，方便取用
 
-https://github.com/Baiganjia/EMBY_HotMovie_Importer/assets/134911905/410a6e73-c075-41b7-a3c8-578d3af3c73a
+---
+
+![2023-05-30_082943](https://github.com/Baiganjia/EMBY_HotMovie_Importer/assets/134911905/7e05402a-b048-4b98-a854-57447b2c1015)
 
 ![2023-05-30_082944](https://github.com/Baiganjia/EMBY_HotMovie_Importer/assets/134911905/9055735c-44e9-4d5e-960a-2524a2f749cd)
 
 ### 运行方式
-文本编辑器打开py脚本，替换你自己的内容
-
+文本编辑器打开py脚本，设定并替换你自己的内容
 ```Plain Text
-# Emby服务器的地址和API密钥
-EMBY_SERVER = '替换你的EMBY服务器'
-API_KEY = '替换你的EmbyAPI'
-
-# 设置要添加电影到指定合集的ID，不指定则自动创建
-COLLECTION_ID = "2333333"
-
-# 设置要创建的合集的名称
-COLLECTION_NAME = "【热门电影】"
+如果不想要输出csv文件 就删掉220行 self.write_to_csv()
 ```
+
 ### 运行脚本
 ```Plain Text
 python EMBY_HotMovie_Importer.py
@@ -37,6 +32,4 @@ python EMBY_HotMovie_Importer.py
 pip install XXXXXX
 
 ```
-
-
 
