@@ -6,8 +6,8 @@ import base64
 import urllib.parse
 
 
-EMBY_SERVER = 'https://XXXXX'
-API_KEY = 'XXXX'  # 这里填入你自己的eMBY API密钥
+EMBY_SERVER = 'https://XXXXX'  # 这里填入你自己的EMBY服务器
+API_KEY = 'XXXX'  # 这里填入你自己的EMBY API密钥
 TMDB_API_KEY = 'XXXXX' # 这里填入你自己的TMDB API密钥
 
 COLLECTION_ID = "2719225"
