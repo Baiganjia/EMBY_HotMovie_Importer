@@ -7,6 +7,10 @@
 如果不指定合集，则会自动创建一个。
 之后会更新合集封面，让合集封面保持最新。
 
+https://github.com/Baiganjia/EMBY_HotMovie_Importer/assets/134911905/410a6e73-c075-41b7-a3c8-578d3af3c73a
+
+![2023-05-30_082944](https://github.com/Baiganjia/EMBY_HotMovie_Importer/assets/134911905/9055735c-44e9-4d5e-960a-2524a2f749cd)
+
 ### 运行方式
 文本编辑器打开py脚本，替换你自己的内容
 
@@ -32,3 +36,6 @@ python EMBY_HotMovie_Importer.py
 pip install XXXXXX
 
 ```
+
+
+
