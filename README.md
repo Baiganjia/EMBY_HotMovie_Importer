@@ -8,7 +8,7 @@
 之后会更新合集封面，让合集封面保持最新。
 
 ### 运行方式
-打开py脚本，替换你自己的内容
+文本编辑器打开py脚本，替换你自己的内容
 
 ```Plain Text
 # Emby服务器的地址和API密钥
@@ -16,7 +16,7 @@ EMBY_SERVER = '替换你的EMBY服务器'
 API_KEY = '替换你的EmbyAPI'
 
 # 设置要添加电影到指定合集的ID，不指定则自动创建
-COLLECTION_ID = "2719594"
+COLLECTION_ID = "2333333"
 
 # 设置要创建的合集的名称
 COLLECTION_NAME = "【热门电影】"
