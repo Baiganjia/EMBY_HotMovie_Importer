@@ -1,28 +1,39 @@
 import os,requests,json,time,base64,csv
 from bs4 import BeautifulSoup
 import urllib.parse
+from configparser import ConfigParser
 
-# 这里设置代理
-# os.environ['http_proxy'] = 'http://127.0.0.1:7890'
-# os.environ['https_proxy'] = 'http://127.0.0.1:7890'
+
+config = ConfigParser()
+with open('config.conf', encoding='utf-8') as f:
+    config.read_file(f)
+use_proxy = config.getboolean('Proxy', 'use_proxy', fallback=False)
+if use_proxy:
+    print('使用代理')
+    input()
+    os.environ['http_proxy'] = 'http://127.0.0.1:7890'
+    os.environ['https_proxy'] = 'http://127.0.0.1:7890'
+else:
+    print('不使用代理')
+    input()
+    os.environ.pop('http_proxy', None)
+    os.environ.pop('https_proxy', None)
 
 class Get_Detail(object):
 
     def __init__(self):
-        # 这里填入你Emby服务器地址
-        self.emby_server = 'https://BAIGAN.EMBY.SERVER' 
-        # 这里填入你Emby API密钥
-        self.emby_api_key = 'XXXXXXXXEMBYXXXXXXXXXXXXXXXX' 
-        # 这里填入你自己的TMDB API密钥
-        self.tmdb_api_key = 'XXXXXXXXTMDBXXXXXXXXXXX' 
-        # 设置要添加电影到指定合集的ID，不指定则按下面指定的名称自动创建
-        self.collection_id = "2333333" 
-        # 设置要创建的合集的名称
-        self.collection_name = "【豆瓣和TMDB热门电影】" 
-        # 这里设置你要获取的豆瓣电影数量
-        self.movies_per_page = 20  
         self.noexit = []
         self.ctls = []
+
+        # 获取配置项的值
+        self.emby_server = config.get('Server', 'emby_server')
+        self.emby_api_key = config.get('Server', 'emby_api_key')
+        self.tmdb_api_key = config.get('Server', 'tmdb_api_key')
+        self.collection_id = config.get('Collection', 'collection_id')
+        self.collection_name = config.get('Collection', 'collection_name')
+        self.movies_per_page = config.get('Collection', 'movies_per_page') 
+
+            
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36 Edg/101.0.1210.39"
         }
@@ -216,11 +227,11 @@ class Get_Detail(object):
                     print(f"当前Emby库内还没有 '{movie['影名']}' {imdb_id}")
                     message = [movie['影名'], imdb_id]
                     self.noexit.append(message)
-            self.write_to_csv()  # 如果不想输出CSV 就注释掉这一行
+            self.write_to_csv()      
         else:
             print("该电影似乎缺失海报.")
 
-            
+
     def write_to_csv(self):
         with open('noexit.csv', 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.writer(f)
