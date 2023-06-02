@@ -1,0 +1,3 @@
+﻿BeautifulSoup4
+urllib3
+configparser
