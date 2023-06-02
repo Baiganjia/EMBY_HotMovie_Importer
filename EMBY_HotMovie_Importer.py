@@ -22,7 +22,7 @@ else:
 class Get_Detail(object):
 
     def __init__(self):
-        self.noexit = []
+        self.noexist = []
         self.ctls = []
 
         # 获取配置项的值
@@ -226,17 +226,17 @@ class Get_Detail(object):
                 else:
                     print(f"当前Emby库内还没有 '{movie['影名']}' {imdb_id}")
                     message = [movie['影名'], imdb_id]
-                    self.noexit.append(message)
+                    self.noexist.append(message)
             self.write_to_csv()      
         else:
             print("该电影似乎缺失海报.")
 
 
     def write_to_csv(self):
-        with open('noexit.csv', 'w', newline='', encoding='utf-8-sig') as f:
+        with open('noexist.csv', 'w', newline='', encoding='utf-8-sig') as f:
             writer = csv.writer(f)
             writer.writerow(['电影名', 'imdbID'])  # writing the header
-            writer.writerows(self.noexit)  # writing the data
+            writer.writerows(self.noexist)  # writing the data
                 
 if __name__ == "__main__":
     gd = Get_Detail()
