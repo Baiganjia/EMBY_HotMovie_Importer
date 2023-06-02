@@ -9,13 +9,9 @@ with open('config.conf', encoding='utf-8') as f:
     config.read_file(f)
 use_proxy = config.getboolean('Proxy', 'use_proxy', fallback=False)
 if use_proxy:
-    print('使用代理')
-    input()
     os.environ['http_proxy'] = 'http://127.0.0.1:7890'
     os.environ['https_proxy'] = 'http://127.0.0.1:7890'
 else:
-    print('不使用代理')
-    input()
     os.environ.pop('http_proxy', None)
     os.environ.pop('https_proxy', None)
 
