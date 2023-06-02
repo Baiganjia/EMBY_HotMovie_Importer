@@ -17,7 +17,7 @@ Emby中还没有的电影，会以[片名，IMDBID]的格式输出到CSV文件�
 
 ```Plain Text
 脚本会输出一个noexist.csv文件没用来记录哪些热门电影是你的Emby库中没有的
-如果不想要输出csv文件 就删掉220行 self.write_to_csv()
+如果不想要输出csv文件 就删掉230行 self.write_to_csv()
 ```
 ![image](https://github.com/Baiganjia/EMBY_HotMovie_Importer/assets/134911905/811c38b6-9ece-42f6-8c76-343112fea5ba)
 
