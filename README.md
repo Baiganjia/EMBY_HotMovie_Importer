@@ -1,3 +1,5 @@
+- 这是旧版，最新版请移步：https://github.com/Baiganjia/EMBY_HotMovie_Importer_V2/
+
 # Emby服务器自动创建热门影剧合集
 
 设计狗一只，没学过Python，啥都不会，GPT写的，我只管Pua它。
